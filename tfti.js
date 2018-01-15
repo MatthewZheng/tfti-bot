@@ -1,13 +1,17 @@
 const login = require("facebook-chat-api");
+const fs = require("fs");
 
-var credentials = {
-   email: "",
-   password: ""
-};
+//Uncomment this to set your own appstate.json
+// var credentials = {
+//    email: "",
+//    password: ""
+// };
 
-var triggerWords = ["with", "party", "drink", "drinks", "fucked", "drinking", "fun"];
+var triggerWords = ["with", "party", "drink", "drinks", "fucked", "fuck", "drinking", "fun", "frats", "parties", "sending", "Sending", "/confirm"];
 var shutDown = ["shut up", "Shut up", "fuck off", "Fuck off"];
-login(credentials, (err, api) => {
+var tftis = ["tfti", "Tfti", "tfti'd", "Tfti'd"];
+// login(credentials, (err, api) => {
+login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, api) => {
    //api.setOptions({selfListen: true});
 
    var stopListening = api.listen((err, event) => {
@@ -24,9 +28,16 @@ login(credentials, (err, api) => {
             }
 
             //reacts
-            if (event.body == "tfti" || event.body == "Tfti") api.setMessageReaction("\uD83D\uDE22", event.messageID);
+            if (tftis.indexOf(event.body) > -1) api.setMessageReaction("\uD83D\uDE22", event.messageID);
+            for(var j=0; j<parse.length; j++){
+               console.log("parsing");
+               if (tftis.indexOf(parse[j]) > -1) api.setMessageReaction("\uD83D\uDE22", event.messageID);
+            }
 
             if(shutDown.indexOf(event.body) > -1){
+               api.sendMessage("k bye triangle down", event.threadID);
+               //Unblock the comment below to allow for saving of your own appstate
+               // fs.writeFileSync('appstate.json', JSON.stringify(api.getAppState()));
                return stopListening();
             }
 
