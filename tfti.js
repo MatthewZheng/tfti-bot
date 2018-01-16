@@ -7,9 +7,12 @@ const fs = require("fs");
 //    password: ""
 // };
 
-var triggerWords = ["with", "party", "drink", "drinks", "fucked", "fuck", "drinking", "fun", "frats", "parties", "sending", "Sending", "/confirm"];
-var shutDown = ["shut up", "Shut up", "fuck off", "Fuck off"];
-var tftis = ["tfti", "Tfti", "tfti'd", "Tfti'd"];
+//Idea to implement:
+//Auto-switch nicknames to cause confusion based on a command
+
+var triggerWords = ["with", "party", "drink", "drinks", "fucked", "fuck", "drinking", "fun", "frats", "parties", "sending", "/confirm"];
+var shutDown = ["shut up", "fuck off"];
+var tftis = ["tfti", "tfti'd"];
 // login(credentials, (err, api) => {
 login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, api) => {
    //api.setOptions({selfListen: true});
@@ -20,7 +23,7 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, ap
       switch(event.type){
          case "message":
             //listen for tfti
-            var parse = event.body.replace(/\d+/g, '').split(" ");
+            var parse = event.body.toLowerCase().replace(/\d+/g, '').split(" ");
             console.log(parse);
             for(var i=0; i<parse.length; i++){
                console.log("parsing");
@@ -34,7 +37,7 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, ap
                if (tftis.indexOf(parse[j]) > -1) api.setMessageReaction("\uD83D\uDE22", event.messageID);
             }
 
-            if(shutDown.indexOf(event.body) > -1){
+            if(shutDown.indexOf(event.body.toLowerCase()) > -1){
                api.sendMessage("k bye triangle down", event.threadID);
                //Unblock the comment below to allow for saving of your own appstate
                // fs.writeFileSync('appstate.json', JSON.stringify(api.getAppState()));
