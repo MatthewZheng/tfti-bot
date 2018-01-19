@@ -12,7 +12,7 @@ const fs = require("fs");
 
 var triggerWords = ["with", "party", "drink", "drinks", "fucked", "fuck", "drinking", "fun", "frats", "parties", "sending", "/confirm"];
 var shutDown = ["shut up", "fuck off"];
-var tftis = ["tfti", "tfti'd"];
+var tftis = ["tfti", 'tfti’d'];
 // login(credentials, (err, api) => {
 login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, api) => {
    //api.setOptions({selfListen: true});
